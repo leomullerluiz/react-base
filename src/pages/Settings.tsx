@@ -4,8 +4,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useTheme } from "next-themes";
 import { useState } from "react";
+import { toast } from "@/components/ui/sonner";
 
 const Settings = () => {
   const { theme, setTheme } = useTheme();
@@ -25,44 +28,55 @@ const Settings = () => {
     });
   };
 
+  const handleSwitchChange = (name: string, checked: boolean) => {
+    setFormData({
+      ...formData,
+      [name]: checked,
+    });
+  };
+
+  const handleSave = () => {
+    toast.success("Configurações salvas com sucesso!");
+  };
+
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Configurações</h2>
         <p className="text-muted-foreground">
-          Manage your account settings and preferences
+          Gerencie suas configurações e preferências de conta
         </p>
       </div>
 
       <div className="grid gap-8">
         <Card>
           <CardHeader>
-            <CardTitle>Appearance</CardTitle>
+            <CardTitle>Aparência</CardTitle>
             <CardDescription>
-              Customize the appearance of the application
+              Personalize a aparência do aplicativo
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label>Theme</Label>
+              <Label>Tema atual: {theme}</Label>
               <div className="flex flex-wrap gap-4">
                 <Button 
                   variant={theme === "light" ? "default" : "outline"} 
                   onClick={() => setTheme("light")}
                 >
-                  Light
+                  Claro
                 </Button>
                 <Button 
                   variant={theme === "dark" ? "default" : "outline"} 
                   onClick={() => setTheme("dark")}
                 >
-                  Dark
+                  Escuro
                 </Button>
                 <Button 
                   variant={theme === "system" ? "default" : "outline"} 
                   onClick={() => setTheme("system")}
                 >
-                  System
+                  Sistema
                 </Button>
               </div>
             </div>
@@ -71,15 +85,15 @@ const Settings = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
+            <CardTitle>Informações Pessoais</CardTitle>
             <CardDescription>
-              Update your personal information
+              Atualize suas informações pessoais
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Nome</Label>
                 <Input 
                   id="name" 
                   name="name"
@@ -112,31 +126,25 @@ const Settings = () => {
             
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
+                <Switch
                   id="notifications"
-                  name="notifications"
                   checked={formData.notifications}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 rounded border-gray-300"
+                  onCheckedChange={(checked) => handleSwitchChange("notifications", checked)}
                 />
-                <Label htmlFor="notifications">Enable notifications</Label>
+                <Label htmlFor="notifications">Ativar notificações</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
+                <Switch
                   id="marketing"
-                  name="marketing"
                   checked={formData.marketing}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 rounded border-gray-300"
+                  onCheckedChange={(checked) => handleSwitchChange("marketing", checked)}
                 />
-                <Label htmlFor="marketing">Receive marketing emails</Label>
+                <Label htmlFor="marketing">Receber emails de marketing</Label>
               </div>
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Save Changes</Button>
+            <Button onClick={handleSave}>Salvar Alterações</Button>
           </CardFooter>
         </Card>
       </div>
