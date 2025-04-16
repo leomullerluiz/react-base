@@ -1,73 +1,118 @@
-# Welcome to your Lovable project
+# React Base
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/7f9abec2-0022-4b86-8b9e-bb9c2a3a1fc9
+This project is a complete dashboard developed with React, TypeScript, Tailwind CSS, shadcn/ui and React Query. It supports themes (light and dark), navigation between pages, global state management and API integration for displaying dynamic data. The project is highly modular and uses good development practices, such as reusable components and separation of concerns.
 
-## How can I edit this code?
+## Run
 
-There are several ways of editing your application.
+Make sure you have Node.js (version 16 or higher) and npm installed. If you don't, install them using nvm.
 
-**Use Lovable**
+### Clone
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7f9abec2-0022-4b86-8b9e-bb9c2a3a1fc9) and start prompting.
+``
+git clone <URL_DO_REPOSITORIO>
+``
+``
+cd <NOME_DO_PROJETO>
+``
 
-Changes made via Lovable will be committed automatically to this repo.
+### Install Dependencies
 
-**Use your preferred IDE**
+``
+npm install
+``
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Run
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+``
 npm run dev
-```
+``
+- Project will be available in http://localhost:5173.
 
-**Edit a file directly in GitHub**
+## How to Add Features to the Project
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Adding a New Screen
 
-**Use GitHub Codespaces**
+1. **Create the Screen Component**:
+   - Navigate to the `src/pages` directory.
+   - Create a new file, e.g., `NewPage.tsx`:
+     ```tsx
+     // filepath: src/pages/NewPage.tsx
+     import React from "react";
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+     const NewPage = () => {
+       return (
+         <div className="container py-10">
+           <h1 className="text-3xl font-bold">New Screen</h1>
+           <p className="text-muted-foreground">This is the content of the new screen.</p>
+         </div>
+       );
+     };
 
-## What technologies are used for this project?
+     export default NewPage;
+     ```
 
-This project is built with:
+2. **Add the Screen to the Router**:
+   - Open `src/App.tsx`.
+   - Import the new screen:
+     ```tsx
+     import NewPage from "./pages/NewPage";
+     ```
+   - Add a new route inside the `<Routes>` component:
+     ```tsx
+     <Route path="/new-page" element={<NewPage />} />
+     ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+3. **Test the Screen**:
+   - Run the development server (`npm run dev`) and navigate to `http://localhost:5173/new-page`.
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/7f9abec2-0022-4b86-8b9e-bb9c2a3a1fc9) and click on Share -> Publish.
+### Adding a New API Endpoint
 
-## Can I connect a custom domain to my Lovable project?
+1. **Define the Endpoint**:
+   - Open [api.ts](http://_vscodecontentref_/0).
+   - Add the new endpoint to the `api` object:
+     ```ts
+     export const api = {
+       ...existingEndpoints,
+       newResource: {
+         getAll: () => fetchApi<NewResource[]>("/new-resource"),
+         getById: (id: number) => fetchApi<NewResource>(`/new-resource/${id}`),
+       },
+     };
+     ```
 
-Yes, you can!
+2. **Use the Endpoint**:
+   - Use the new endpoint in a component or page:
+     ```tsx
+     import { useQuery } from "@tanstack/react-query";
+     import { api } from "@/services/api";
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+     const { data, isLoading, error } = useQuery({
+       queryKey: ["newResource"],
+       queryFn: () => api.newResource.getAll(),
+     });
+     ```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+
+### Adding Navigation to the New Screen
+
+1. **Add a Navigation Link**:
+   - Open [sidebar.tsx](http://_vscodecontentref_/1).
+   - Add a new link to the sidebar:
+     ```tsx
+     <NavLink to="/new-page" className={({ isActive }) => getNavClass(isActive)}>
+       <Icon className="mr-2 h-4 w-4" />
+       New Screen
+     </NavLink>
+     ```
+
+2. **Test the Navigation**:
+   - Run the development server (`npm run dev`) and click the new link in the sidebar to navigate to the screen.
+
+---
+
+With these steps, you can easily extend the project by adding new screens, API endpoints, and navigation links.
