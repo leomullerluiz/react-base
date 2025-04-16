@@ -28,7 +28,7 @@ npm install
 ``
 npm run dev
 ``
-- Project will be available in http://localhost:5173.
+- Project will be available in http://localhost:8080/
 
 ## How to Add Features to the Project
 
